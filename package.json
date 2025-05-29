@@ -1,0 +1,56 @@
+{
+    "name": "mcp-plugin-server",
+    "version": "1.0.0",
+    "description": "A centralized MCP server with plugin architecture for external tool integrations",
+    "main": "dist/server.js",
+    "scripts": {
+        "dev": "tsx watch src/server.ts",
+        "build": "tsc",
+        "start": "node dist/server.js",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix"
+    },
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "plugin",
+        "server",
+        "api"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "helmet": "^7.1.0",
+        "express-rate-limit": "^7.1.5",
+        "ws": "^8.14.2",
+        "uuid": "^9.0.1",
+        "joi": "^17.11.0",
+        "bcrypt": "^5.1.1",
+        "jsonwebtoken": "^9.0.2",
+        "dotenv": "^16.3.1"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/cors": "^2.8.17",
+        "@types/ws": "^8.5.10",
+        "@types/uuid": "^9.0.7",
+        "@types/bcrypt": "^5.0.2",
+        "@types/jsonwebtoken": "^9.0.5",
+        "@types/node": "^20.10.0",
+        "@types/jest": "^29.5.8",
+        "@typescript-eslint/eslint-plugin": "^6.12.0",
+        "@typescript-eslint/parser": "^6.12.0",
+        "eslint": "^8.54.0",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.1.1",
+        "tsx": "^4.6.0",
+        "typescript": "^5.3.2"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
