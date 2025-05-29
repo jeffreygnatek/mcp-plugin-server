@@ -65,6 +65,198 @@ The server will start on the configured port (default: 3000) and display:
 - WebSocket MCP endpoint: `ws://localhost:3000/mcp`
 - Health check: `http://localhost:3000/health`
 
+## Docker Deployment
+
+Run the MCP Plugin Server in Docker for consistent, isolated deployments across different environments.
+
+### Quick Start with Docker
+
+The easiest way to get started with Docker is using the provided setup script:
+
+```bash
+# Make the setup script executable (if not already)
+chmod +x docker-setup.sh
+
+# Quick setup and start (production mode)
+./docker-setup.sh setup
+
+# Or start in development mode with hot reload
+./docker-setup.sh dev
+```
+
+### Manual Docker Setup
+
+#### 1. Environment Configuration
+
+Create a `.env` file from the example:
+
+```bash
+# Copy the example environment file
+cp env.example .env
+
+# Edit the file with your configuration
+nano .env
+```
+
+Example `.env` configuration:
+
+```bash
+NODE_ENV=production
+PORT=3000
+MASTER_KEY=your-secure-64-character-hex-master-key-here
+ADMIN_TOKEN=your-secure-admin-token-here
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+```
+
+#### 2. Production Deployment
+
+```bash
+# Build and start the production container
+docker-compose up --build -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the container
+docker-compose down
+```
+
+#### 3. Development Mode
+
+For development with hot reload and debugging:
+
+```bash
+# Start in development mode
+docker-compose -f docker-compose.dev.yml up --build -d
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop development containers
+docker-compose -f docker-compose.dev.yml down
+```
+
+### Docker Setup Script Commands
+
+The `docker-setup.sh` script provides convenient commands for managing your Docker deployment:
+
+```bash
+# Setup and start (production mode)
+./docker-setup.sh setup
+
+# Start in development mode
+./docker-setup.sh dev
+
+# View logs (production)
+./docker-setup.sh logs
+
+# View development logs
+./docker-setup.sh logs dev
+
+# Stop containers
+./docker-setup.sh stop
+
+# Restart containers
+./docker-setup.sh restart
+
+# Check container status
+./docker-setup.sh status
+
+# Clean up Docker resources
+./docker-setup.sh clean
+
+# Show help
+./docker-setup.sh help
+```
+
+### Docker Features
+
+- **Multi-stage Build**: Optimized production images with minimal size
+- **Security**: Non-root user execution for enhanced security
+- **Health Checks**: Built-in health monitoring for container orchestration
+- **Persistent Storage**: Volume mounts for data, plugins, and configuration
+- **Development Support**: Hot reload and debugging capabilities
+- **Environment Variables**: Flexible configuration via environment variables
+
+### Volume Mounts
+
+The Docker setup includes the following volume mounts:
+
+```yaml
+volumes:
+  - ./data:/app/data # Persistent credential storage
+  - ./plugins:/app/plugins # Plugin files
+  - ./config:/app/config # Configuration files
+```
+
+### Environment Variables
+
+Key environment variables for Docker deployment:
+
+| Variable          | Description                    | Default                                       |
+| ----------------- | ------------------------------ | --------------------------------------------- |
+| `NODE_ENV`        | Environment mode               | `production`                                  |
+| `PORT`            | Server port                    | `3000`                                        |
+| `MASTER_KEY`      | Encryption key for credentials | Auto-generated                                |
+| `ADMIN_TOKEN`     | Admin API access token         | Auto-generated                                |
+| `ALLOWED_ORIGINS` | CORS allowed origins           | `http://localhost:3000,http://localhost:3001` |
+
+### Production Considerations
+
+For production deployments:
+
+1. **Security**: Always set custom `MASTER_KEY` and `ADMIN_TOKEN`
+2. **Backup**: Regularly backup the `./data` directory
+3. **Monitoring**: Use the health check endpoint for monitoring
+4. **Updates**: Use `docker-compose pull` to update images
+5. **Logs**: Configure log rotation and centralized logging
+
+### Kubernetes Deployment
+
+For Kubernetes deployments, you can use the Docker image with these considerations:
+
+```yaml
+# Example Kubernetes deployment snippet
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-plugin-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-plugin-server
+  template:
+    spec:
+      containers:
+        - name: mcp-plugin-server
+          image: mcp-plugin-server:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: master-key
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: admin-token
+          volumeMounts:
+            - name: data-storage
+              mountPath: /app/data
+            - name: plugin-storage
+              mountPath: /app/plugins
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+```
+
 ## API Documentation
 
 ### Authentication

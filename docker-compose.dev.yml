@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  mcp-plugin-server-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: mcp-plugin-server-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "9229:9229" # Debug port
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      # Security tokens for development
+      - MASTER_KEY=${MASTER_KEY:-dev-master-key}
+      - ADMIN_TOKEN=${ADMIN_TOKEN:-dev-admin-token}
+      # CORS settings for development
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:3001,http://localhost:8080}
+    volumes:
+      # Mount source code for hot reload
+      - ./src:/app/src
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./package*.json:/app/
+      # Persistent data storage
+      - ./data:/app/data
+      # Plugin storage
+      - ./plugins:/app/plugins
+      # Configuration files
+      - ./config:/app/config
+      # Node modules (for better performance)
+      - node_modules:/app/node_modules
+    networks:
+      - mcp-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "const http=require('http');const options={hostname:'localhost',port:3000,path:'/health',timeout:2000};const req=http.request(options,(res)=>{if(res.statusCode===200)process.exit(0);else process.exit(1);});req.on('error',()=>process.exit(1));req.end();",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  mcp-network:
+    driver: bridge
+
+volumes:
+  node_modules:

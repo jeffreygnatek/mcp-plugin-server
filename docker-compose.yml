@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  mcp-plugin-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp-plugin-server
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Security tokens (set these in .env file or docker-compose.override.yml)
+      - MASTER_KEY=${MASTER_KEY:-}
+      - ADMIN_TOKEN=${ADMIN_TOKEN:-}
+      # CORS settings
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:3001}
+    volumes:
+      # Persistent data storage
+      - ./data:/app/data
+      # Plugin storage (if you want to add plugins dynamically)
+      - ./plugins:/app/plugins
+      # Configuration files
+      - ./config:/app/config
+    networks:
+      - mcp-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "const http=require('http');const options={hostname:'localhost',port:3000,path:'/health',timeout:2000};const req=http.request(options,(res)=>{if(res.statusCode===200)process.exit(0);else process.exit(1);});req.on('error',()=>process.exit(1));req.end();",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  mcp-network:
+    driver: bridge
+
+volumes:
+  mcp-data:
+    driver: local
