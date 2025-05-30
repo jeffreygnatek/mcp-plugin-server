@@ -1,0 +1,9 @@
+{
+    "name": "postgres",
+    "version": "1.0.0",
+    "description": "A plugin for interacting with PostgreSQL databases",
+    "main": "index.ts",
+    "dependencies": [
+        "pg"
+    ]
+}

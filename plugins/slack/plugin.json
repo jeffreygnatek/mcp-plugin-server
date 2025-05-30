@@ -1,0 +1,7 @@
+{
+    "name": "slack",
+    "version": "1.0.0",
+    "description": "A plugin for interacting with Slack workspaces",
+    "main": "index.ts",
+    "dependencies": []
+}

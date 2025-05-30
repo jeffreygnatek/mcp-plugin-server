@@ -32,12 +32,12 @@ npm run build
 
 Create a `.env` file with your configuration:
 
-```bash
-# Server port
-PORT=3000
+        ```bash
+        # Server port
+        PORT=3117
 
-# Master key for encrypting credentials (generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
-MASTER_KEY=your_64_character_hex_master_key_here
+        # Master key for encrypting credentials (generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
+        MASTER_KEY=your_64_character_hex_master_key_here
 
 # Admin token for accessing management endpoints
 ADMIN_TOKEN=your_secure_admin_token_here
@@ -55,19 +55,21 @@ NODE_ENV=development
 # Development mode (with hot reloading)
 npm run dev
 
-# Production mode
-npm start
-```
+        # Production mode
+        npm start
+        ```
 
-The server will start on the configured port (default: 3000) and display:
+        The server will start on the configured port (default: 3117) and display:
 
-- REST API endpoints: `http://localhost:3000/api/*`
-- WebSocket MCP endpoint: `ws://localhost:3000/mcp`
-- Health check: `http://localhost:3000/health`
+        - REST API endpoints: `http://localhost:3117/api/*`
+        - WebSocket MCP endpoint: `ws://localhost:3117/mcp`
+        - Health check: `http://localhost:3117/health`
 
 ## Docker Deployment
 
 Run the MCP Plugin Server in Docker for consistent, isolated deployments across different environments.
+
+> **Note on Port Configuration**: The default port is now 3117. When running Docker containers, make sure to map the correct port with `-p 3117:3117`. You can customize this by setting the `PORT` environment variable (e.g., `-e PORT=8080 -p 8080:8080`).
 
 ### Quick Start with Docker
 
@@ -100,12 +102,12 @@ nano .env
 
 Example `.env` configuration:
 
-```bash
-NODE_ENV=production
-PORT=3000
-MASTER_KEY=your-secure-64-character-hex-master-key-here
-ADMIN_TOKEN=your-secure-admin-token-here
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+        ```bash
+        NODE_ENV=production
+        PORT=3117
+        MASTER_KEY=your-secure-64-character-hex-master-key-here
+        ADMIN_TOKEN=your-secure-admin-token-here
+        ALLOWED_ORIGINS=http://localhost:3117,http://localhost:3001
 ```
 
 #### 2. Production Deployment
@@ -193,13 +195,13 @@ volumes:
 
 Key environment variables for Docker deployment:
 
-| Variable          | Description                    | Default                                       |
-| ----------------- | ------------------------------ | --------------------------------------------- |
-| `NODE_ENV`        | Environment mode               | `production`                                  |
-| `PORT`            | Server port                    | `3000`                                        |
-| `MASTER_KEY`      | Encryption key for credentials | Auto-generated                                |
-| `ADMIN_TOKEN`     | Admin API access token         | Auto-generated                                |
-| `ALLOWED_ORIGINS` | CORS allowed origins           | `http://localhost:3000,http://localhost:3001` |
+        | Variable          | Description                    | Default                                       |
+        | ----------------- | ------------------------------ | --------------------------------------------- |
+        | `NODE_ENV`        | Environment mode               | `production`                                  |
+        | `PORT`            | Server port                    | `3117`                                        |
+        | `MASTER_KEY`      | Encryption key for credentials | Auto-generated                                |
+        | `ADMIN_TOKEN`     | Admin API access token         | Auto-generated                                |
+        | `ALLOWED_ORIGINS` | CORS allowed origins           | `http://localhost:3117,http://localhost:3001` |
 
 ### Production Considerations
 
@@ -229,11 +231,11 @@ spec:
   template:
     spec:
       containers:
-        - name: mcp-plugin-server
-          image: mcp-plugin-server:latest
-          ports:
-            - containerPort: 3000
-          env:
+                - name: mcp-plugin-server
+                  image: mcp-plugin-server:latest
+                  ports:
+                    - containerPort: 3117
+                  env:
             - name: MASTER_KEY
               valueFrom:
                 secretKeyRef:
@@ -249,12 +251,12 @@ spec:
               mountPath: /app/data
             - name: plugin-storage
               mountPath: /app/plugins
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 30
-            periodSeconds: 10
+                  livenessProbe:
+                    httpGet:
+                      path: /health
+                      port: 3117
+                    initialDelaySeconds: 30
+                    periodSeconds: 10
 ```
 
 ## API Documentation
@@ -371,9 +373,9 @@ Content-Type: application/json
 }
 ```
 
-### WebSocket MCP Communication
+        ### WebSocket MCP Communication
 
-Connect to `ws://localhost:3000/mcp` and send JSON-RPC 2.0 messages:
+        Connect to `ws://localhost:3117/mcp` and send JSON-RPC 2.0 messages:
 
 ```javascript
 // List tools
@@ -515,36 +517,36 @@ The included OpenWeatherMap plugin demonstrates:
 2. Store the credential:
 
 ```bash
-curl -X POST http://localhost:3000/api/auth/credentials \
-  -H "Authorization: Bearer your_admin_token" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "pluginId": "openweather",
-    "credentialId": "api_key",
-    "value": "your_openweather_api_key"
-  }'
+        curl -X POST http://localhost:3117/api/auth/credentials \
+          -H "Authorization: Bearer your_admin_token" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "pluginId": "openweather",
+            "credentialId": "api_key",
+            "value": "your_openweather_api_key"
+          }'
 ```
 
 3. Load and enable the plugin:
 
 ```bash
-# This would be implemented in the plugin loading mechanism
-curl -X POST http://localhost:3000/api/plugins/openweather/enable \
-  -H "Authorization: Bearer your_admin_token"
+        # This would be implemented in the plugin loading mechanism
+        curl -X POST http://localhost:3117/api/plugins/openweather/enable \
+          -H "Authorization: Bearer your_admin_token"
 ```
 
 4. Use the weather tools:
 
 ```bash
-curl -X POST http://localhost:3000/api/mcp/tools/execute \
-  -H "Content-Type: application/json" \
-  -d '{
-    "toolName": "openweather.get_weather",
-    "args": {
-      "location": "London,UK",
-      "units": "metric"
-    }
-  }'
+        curl -X POST http://localhost:3117/api/mcp/tools/execute \
+          -H "Content-Type: application/json" \
+          -d '{
+            "toolName": "openweather.get_weather",
+            "args": {
+              "location": "London,UK",
+              "units": "metric"
+            }
+          }'
 ```
 
 ## Security

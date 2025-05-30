@@ -7,16 +7,16 @@ services:
       dockerfile: Dockerfile
     container_name: mcp-plugin-server
     restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
+            ports:
+              - "3117:3117"
+            environment:
+              - NODE_ENV=production
+              - PORT=3117
       # Security tokens (set these in .env file or docker-compose.override.yml)
       - MASTER_KEY=${MASTER_KEY:-}
       - ADMIN_TOKEN=${ADMIN_TOKEN:-}
-      # CORS settings
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:3001}
+              # CORS settings
+              - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3117,http://localhost:3001}
     volumes:
       # Persistent data storage
       - ./data:/app/data
@@ -27,13 +27,13 @@ services:
     networks:
       - mcp-network
     healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "const http=require('http');const options={hostname:'localhost',port:3000,path:'/health',timeout:2000};const req=http.request(options,(res)=>{if(res.statusCode===200)process.exit(0);else process.exit(1);});req.on('error',()=>process.exit(1));req.end();",
-        ]
+              test:
+                [
+                  "CMD",
+                  "node",
+                  "-e",
+                  "const http=require('http');const options={hostname:'localhost',port:3117,path:'/health',timeout:2000};const req=http.request(options,(res)=>{if(res.statusCode===200)process.exit(0);else process.exit(1);});req.on('error',()=>process.exit(1));req.end();",
+                ]
       interval: 30s
       timeout: 10s
       retries: 3

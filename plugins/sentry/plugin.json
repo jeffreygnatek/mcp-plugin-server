@@ -1,0 +1,7 @@
+{
+    "name": "sentry",
+    "version": "1.0.0",
+    "description": "A plugin for fetching and analyzing Sentry issues",
+    "main": "index.ts",
+    "dependencies": []
+}

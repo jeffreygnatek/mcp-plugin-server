@@ -1,0 +1,32 @@
+{
+    "name": "@mcp-plugins/postgres",
+    "version": "1.0.0",
+    "description": "PostgreSQL database plugin for MCP server",
+    "main": "index.ts",
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "lint": "eslint *.ts"
+    },
+    "keywords": [
+        "mcp",
+        "postgresql",
+        "database",
+        "plugin"
+    ],
+    "author": "Jeffrey Gnatek",
+    "license": "MIT",
+    "dependencies": {
+        "pg": "^8.11.3"
+    },
+    "devDependencies": {
+        "@types/pg": "^8.10.9"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

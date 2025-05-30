@@ -2,10 +2,10 @@
 
 # MCP Plugin Server Demo Startup Script
 
-echo "🚀 Starting MCP Plugin Server Demo..."
+echo "\U0001F680 Starting MCP Plugin Server Demo..."
 
 # Set environment variables
-export PORT=3000
+export PORT=3117
 export ADMIN_TOKEN=demo-admin-token
 export MASTER_KEY=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
 export NODE_ENV=development

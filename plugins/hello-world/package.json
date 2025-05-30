@@ -1,0 +1,23 @@
+{
+    "name": "@mcp-plugins/hello-world",
+    "version": "1.0.0",
+    "description": "Simple hello world plugin for MCP server testing",
+    "main": "index.js",
+    "private": true,
+    "scripts": {
+        "test": "jest",
+        "lint": "eslint *.js"
+    },
+    "keywords": [
+        "mcp",
+        "hello-world",
+        "test",
+        "plugin"
+    ],
+    "author": "Jeffrey Gnatek",
+    "license": "MIT",
+    "dependencies": {},
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "name": "@mcp-plugins/slack",
+    "version": "1.0.0",
+    "description": "Slack integration plugin for MCP server",
+    "main": "index.ts",
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "lint": "eslint *.ts"
+    },
+    "keywords": [
+        "mcp",
+        "slack",
+        "chat",
+        "integration",
+        "plugin"
+    ],
+    "author": "Jeffrey Gnatek",
+    "license": "MIT",
+    "dependencies": {
+        "@slack/web-api": "^7.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.0"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "name": "@mcp-plugins/sequential-thinking",
+    "version": "1.0.0",
+    "description": "Sequential thinking and problem-solving plugin for MCP server",
+    "main": "index.ts",
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "lint": "eslint *.ts"
+    },
+    "keywords": [
+        "mcp",
+        "thinking",
+        "problem-solving",
+        "reasoning",
+        "plugin"
+    ],
+    "author": "Jeffrey Gnatek",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "@types/node": "^20.10.0"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "name": "sequential-thinking",
+    "version": "1.0.0",
+    "description": "A plugin for dynamic and reflective problem-solving through sequential thoughts",
+    "main": "index.ts",
+    "dependencies": []
+}
